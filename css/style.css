@@ -1,0 +1,198 @@
+/* WebLogic Monitor - In-Page Glassmorphic Widget Styling */
+.wl-widget-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 450px;
+  min-width: 340px;
+  min-height: 160px;
+  background: rgba(15, 23, 42, 0.94);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #f8fafc;
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 12px;
+  border-radius: 14px;
+  z-index: 999999;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+  resize: both;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.wl-widget-header {
+  padding: 8px 12px;
+  background: rgba(30, 41, 59, 0.85);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: move;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.wl-widget-title {
+  font-weight: 700;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wl-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 8px #10b981;
+}
+
+.wl-widget-timer {
+  color: #10b981;
+  font-weight: 700;
+}
+
+.wl-widget-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 6px 8px;
+  background: rgba(15, 23, 42, 0.6);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+  overflow-x: auto;
+  max-height: 85px;
+  overflow-y: auto;
+}
+
+.wl-widget-toolbar button {
+  background: rgba(255, 255, 255, 0.08);
+  color: #cbd5e1;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 3px 6px;
+  border-radius: 5px;
+  font-size: 10.5px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.wl-widget-toolbar button:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+.wl-widget-toolbar button.active {
+  background: #3b82f6;
+  color: #fff;
+  border-color: #3b82f6;
+}
+
+.wl-widget-content {
+  padding: 10px;
+  min-height: 80px;
+  max-height: 380px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.wl-empty {
+  text-align: center;
+  padding: 30px;
+  color: #94a3b8;
+  font-style: italic;
+}
+
+.wl-card {
+  background: rgba(30, 41, 59, 0.6);
+  border-left: 4px solid #10b981;
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 8px;
+}
+
+.wl-card.critical { border-left-color: #ef4444; }
+.wl-card.warning { border-left-color: #f59e0b; }
+
+.wl-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.wl-badge {
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 700;
+}
+
+.wl-badge.critical { background: #ef4444; color: white; }
+.wl-badge.warning { background: #f59e0b; color: black; }
+
+.wl-stuck {
+  color: #ef4444;
+  font-weight: 700;
+}
+
+.wl-settings-table, .wl-history-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+
+.wl-settings-table th, .wl-history-table th {
+  text-align: left;
+  color: #94a3b8;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.wl-settings-table td, .wl-history-table td {
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.wl-num-inp {
+  width: 60px;
+  background: #1e293b;
+  border: 1px solid #475569;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.wl-btn-save {
+  margin-top: 10px;
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.wl-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.wl-widget-footer {
+  padding: 5px 10px;
+  background: rgba(15, 23, 42, 0.9);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  justify-content: space-between;
+  color: #64748b;
+  font-size: 10px;
+  flex-shrink: 0;
+}

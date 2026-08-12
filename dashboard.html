@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebLogic Command Center Prime</title>
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="brand">
+      <div class="brand-icon">🚀</div>
+      <div class="brand-text">
+        <h1>WebLogic Command Center Prime</h1>
+        <p style="color:#e2e8f0;font-size:12px;font-weight:600;margin-top:2px;display:flex;align-items:center;gap:6px;">
+          Enterprise Real-Time Multi-Domain Monitor
+          <span style="background:linear-gradient(135deg, #2563eb, #7c3aed);color:#ffffff;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;letter-spacing:0.3px;box-shadow:0 2px 10px rgba(37,99,235,0.5);border:1px solid rgba(255,255,255,0.2);">v3.0 ENTERPRISE PRIME</span>
+        </p>
+      </div>
+    </div>
+    <div class="nav-actions">
+      <button id="privacyBtn" class="btn" title="Toggle IP Privacy Masking for Screen Recordings/Demos">🙈 Privacy Mode: OFF</button>
+      <button id="maintenanceBtn" class="btn" title="Toggle Maintenance Mode to Mute Alerts During Server Maintenance">📅 Maintenance: OFF</button>
+      <button id="settingsModalBtn" class="btn">⚙️ Custom Settings</button>
+      <button id="muteBtn" class="btn">🔈 Audio Alerts ON</button>
+      <button id="globalAckBtn" class="btn">✅ Global ACK All</button>
+      <button id="exportTodayBtn" class="btn btn-primary">📥 Export Today's CSV</button>
+      <button id="exportAllBtn" class="btn">📥 Export All History CSV</button>
+    </div>
+  </header>
+
+  <!-- KPI Cards Row -->
+  <section class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-details">
+        <h3>Critical Alerts</h3>
+        <div id="kpiCritical" class="kpi-number critical">0</div>
+      </div>
+      <div class="kpi-badge-icon critical">🚨</div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-details">
+        <h3>Warning Alerts</h3>
+        <div id="kpiWarning" class="kpi-number warning">0</div>
+      </div>
+      <div class="kpi-badge-icon warning">⚠️</div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-details">
+        <h3>Healthy Domains</h3>
+        <div id="kpiHealthy" class="kpi-number success">0</div>
+      </div>
+      <div class="kpi-badge-icon success">🛡️</div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-details">
+        <h3>Active Console Tabs</h3>
+        <div id="kpiTabs" class="kpi-number accent">0</div>
+      </div>
+      <div class="kpi-badge-icon accent">🌐</div>
+    </div>
+  </section>
+
+  <!-- Active Domains Grid Section -->
+  <section>
+    <div class="section-header">
+      <h2>🌐 Active WebLogic Domains Overview</h2>
+      <div class="filter-bar">
+        <input type="text" id="searchInput" class="search-input" placeholder="Search domain or server...">
+      </div>
+    </div>
+
+    <div id="tclCluster" class="cluster-block" style="display:none; margin-bottom: 20px;">
+      <h3 class="cluster-title-bar" data-target="tclGrid" style="font-size: 13px; font-weight: 800; color: #3b82f6; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; padding: 8px 14px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; user-select: none;">
+        <span>🏢 TCL DOMAIN CLUSTER</span>
+        <span class="toggle-icon" style="font-size: 11px; font-weight: 700; color: #93c5fd;">▼ Collapse</span>
+      </h3>
+      <div id="tclGrid" class="domain-grid"></div>
+    </div>
+
+    <div id="hflCluster" class="cluster-block" style="display:none; margin-bottom: 20px;">
+      <h3 class="cluster-title-bar" data-target="hflGrid" style="font-size: 13px; font-weight: 800; color: #10b981; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; padding: 8px 14px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; user-select: none;">
+        <span>🏢 HFL DOMAIN CLUSTER</span>
+        <span class="toggle-icon" style="font-size: 11px; font-weight: 700; color: #6ee7b7;">▼ Collapse</span>
+      </h3>
+      <div id="hflGrid" class="domain-grid"></div>
+    </div>
+
+    <div id="collCluster" class="cluster-block" style="display:none; margin-bottom: 20px;">
+      <h3 class="cluster-title-bar" data-target="collGrid" style="font-size: 13px; font-weight: 800; color: #a855f7; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; padding: 8px 14px; background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; user-select: none;">
+        <span>📦 COLLECTION & OTHER CLUSTER DOMAINS</span>
+        <span class="toggle-icon" style="font-size: 11px; font-weight: 700; color: #c084fc;">▼ Collapse</span>
+      </h3>
+      <div id="collGrid" class="domain-grid"></div>
+    </div>
+
+    <!-- 🚫 Dedicated Ignored Servers Cluster Registry -->
+    <div id="ignoredCluster" class="cluster-block" style="display:none; margin-bottom: 20px;">
+      <h3 class="cluster-title-bar" data-target="ignoredGrid" style="font-size: 13px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; padding: 8px 14px; background: rgba(148, 163, 184, 0.1); border: 1px solid rgba(148, 163, 184, 0.3); border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; user-select: none;">
+        <span>🚫 IGNORED & MUTED SERVERS REGISTRY</span>
+        <span class="toggle-icon" style="font-size: 11px; font-weight: 700; color: #cbd5e1;">▼ Collapse</span>
+      </h3>
+      <div id="ignoredGrid" class="domain-grid"></div>
+    </div>
+
+    <div id="noDomainsPlaceholder" class="empty-placeholder" style="padding: 24px; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 12px; color: #fca5a5; font-size: 18px; font-weight: 700; text-align: center; margin: 20px 0;">⚠️ WebLogic Unreachable - Network Disconnected<div style="font-size: 13px; font-weight: 500; color: #94a3b8; margin-top: 8px;">Please check network connectivity to WebLogic Admin Servers.</div></div>
+  </section>
+
+  <!-- Live Incident History Table Section with Interactive Sub-Tabs -->
+  <section class="events-section">
+    <div class="section-header" style="flex-wrap: wrap; gap: 12px;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <h2>📋 Incident & Event Audit Log</h2>
+        <div class="audit-tabs-bar" style="display: flex; gap: 6px; background: rgba(15, 23, 42, 0.6); padding: 4px; border-radius: 8px; border: 1px solid var(--border);">
+          <button id="tabActiveIncidents" class="audit-tab active">⚡ Active Incidents</button>
+          <button id="tabAllImpacted" class="audit-tab">📋 All Impacted Events</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Start Time</th>
+            <th>Recovery Time</th>
+            <th>Domain</th>
+            <th>Node / Server</th>
+            <th>Severity</th>
+            <th>Health</th>
+            <th>Sockets</th>
+            <th>State</th>
+            <th>Impact Duration</th>
+            <th>Stuck / Remarks</th>
+          </tr>
+        </thead>
+        <tbody id="eventsTableBody">
+          <tr>
+            <td colspan="10" class="empty-placeholder">No events logged yet.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Custom Settings Modal -->
+  <div id="settingsModal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>⚙️ Global Custom Settings</h2>
+        <span id="closeModalBtn" class="close-btn">&times;</span>
+      </div>
+
+      <div class="modal-body">
+        <div class="setting-group">
+          <label>Default Socket Threshold:</label>
+          <input type="number" id="cfgThreshold" class="setting-input" value="70" min="1" max="10000">
+          <small>Default open socket threshold before WARNING severity is triggered.</small>
+        </div>
+
+        <div class="setting-group">
+          <label>Auto-Scan Interval (Seconds):</label>
+          <input type="number" id="cfgInterval" class="setting-input" value="10" min="1" max="60">
+          <small>Frequency of table DOM scanning on WebLogic pages.</small>
+        </div>
+
+        <div class="setting-group">
+          <label>Alert Repeat Interval (Minutes):</label>
+          <input type="number" id="cfgAlertRepeat" class="setting-input" value="5" min="1" max="60">
+          <small>Minutes between un-acknowledged audio alerts.</small>
+        </div>
+
+        <div class="setting-group">
+          <label>Data Retention (Days):</label>
+          <input type="number" id="cfgRetention" class="setting-input" value="7" min="1" max="365">
+          <small>Days before old snapshot events are cleaned up from storage.</small>
+        </div>
+
+        <div class="setting-group">
+          <label>💬 Slack / MS Teams Webhook URL (Auto Alerts):</label>
+          <input type="text" id="cfgWebhookUrl" class="setting-input" placeholder="https://hooks.slack.com/... or https://prod-xx.logic.azure.com/..." style="font-size:11px;">
+          <small>Post instant incident notifications directly to your Slack or Teams channel.</small>
+        </div>
+
+        <div class="setting-group">
+          <label>🛑 UAT / Non-Prod Filter Keywords / IPs (Comma Separated):</label>
+          <input type="text" id="cfgNonProdKeywords" class="setting-input" placeholder="172.17., uat, test, dev, qa, stage" style="font-size:11px;">
+          <small>URLs/Hosts matching these keywords or IPs will be excluded from NOC Dashboard.</small>
+        </div>
+
+        <div class="setting-group checkbox-group">
+          <label><input type="checkbox" id="cfgEnableSound" checked> Enable Audio Beeps (AudioContext)</label>
+          <label><input type="checkbox" id="cfgEnableNotify" checked> Enable Chrome Desktop Notifications</label>
+          <label><input type="checkbox" id="cfgPrivacyMode"> 🙈 Enable IP Privacy Masking (Demo / Screenshot Mode)</label>
+          <label><input type="checkbox" id="cfgMaintenanceMode"> 📅 Enable Maintenance Mode (Mute All Alerts During Server Patching)</label>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button id="saveConfigBtn" class="btn btn-primary">💾 Save Settings</button>
+        <button id="resetConfigBtn" class="btn">🔄 Reset Defaults</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enterprise Footer -->
+  <footer style="margin-top: 40px; padding: 18px 24px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--subtext); background: rgba(15, 23, 42, 0.4); border-radius: 10px; margin-bottom: 20px;">
+    <div>
+      © 2026 <strong>WebLogic Monitor Prime v3.0</strong>. All Rights Reserved.
+    </div>
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <span>👑 Designed & Developed by <strong style="color: #60a5fa;">Mashkoor Alam</strong></span>
+      <span style="padding: 3px 8px; border-radius: 12px; background: rgba(59, 130, 246, 0.15); color: #93c5fd; font-weight: 700; font-size: 10px; border: 1px solid rgba(59, 130, 246, 0.3);">ENTERPRISE EDITION</span>
+    </div>
+  </footer>
+
+  <script src="src/settings.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>

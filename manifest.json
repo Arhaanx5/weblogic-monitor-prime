@@ -1,0 +1,62 @@
+{
+  "manifest_version": 3,
+  "name": "WebLogic Monitor",
+  "version": "3.0.0",
+  "author": "Mashkoor Alam",
+  "description": "Enterprise WebLogic Admin Console real-time monitoring extension with Global NOC Dashboard by Mashkoor Alam.",
+  "permissions": [
+    "storage",
+    "notifications",
+    "tabs",
+    "activeTab",
+    "downloads",
+    "alarms",
+    "scripting",
+    "offscreen"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "src/background.js"
+  },
+  "action": {
+    "default_title": "WebLogic Monitor",
+    "default_popup": "popup.html"
+  },
+  "options_page": "dashboard.html",
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "css": [
+        "css/style.css"
+      ],
+      "js": [
+        "src/storage.js",
+        "src/settings.js",
+        "src/alerts.js",
+        "src/cleanup.js",
+        "src/history.js",
+        "src/monitor.js",
+        "src/ui.js",
+        "src/content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "css/*",
+        "dashboard.html",
+        "popup.html"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ]
+}

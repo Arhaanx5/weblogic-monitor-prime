@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebLogic Monitor - Quick View</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --border: #334155;
+      --text: #f8fafc;
+      --subtext: #94a3b8;
+      --critical: #ef4444;
+      --warning: #f59e0b;
+      --success: #10b981;
+      --accent: #3b82f6;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      width: 360px;
+      background-color: var(--bg);
+      color: var(--text);
+      padding: 14px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 12px;
+    }
+
+    .header-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 15px;
+      color: #fff;
+    }
+
+    .header-icon {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 8px var(--success);
+    }
+
+    .header-icon.has-critical {
+      background: var(--critical);
+      box-shadow: 0 0 10px var(--critical);
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.2); }
+    }
+
+    .btn-dashboard {
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-dashboard:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .stat-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px;
+      text-align: center;
+    }
+
+    .stat-val {
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 2px;
+    }
+
+    .stat-val.critical { color: var(--critical); }
+    .stat-val.warning { color: var(--warning); }
+    .stat-val.healthy { color: var(--success); }
+
+    .stat-lbl {
+      font-size: 10px;
+      color: var(--subtext);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .section-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--subtext);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .domain-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 240px;
+      overflow-y: auto;
+    }
+
+    .domain-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s;
+    }
+
+    .domain-card:hover {
+      border-color: var(--accent);
+    }
+
+    .domain-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      overflow: hidden;
+    }
+
+    .domain-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .domain-sub {
+      font-size: 11px;
+      color: var(--subtext);
+    }
+
+    .badge-pill {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 12px;
+    }
+
+    .badge-pill.critical {
+      background: rgba(239, 68, 68, 0.2);
+      color: var(--critical);
+      border: 1px solid var(--critical);
+    }
+
+    .badge-pill.warning {
+      background: rgba(245, 158, 11, 0.2);
+      color: var(--warning);
+      border: 1px solid var(--warning);
+    }
+
+    .badge-pill.healthy {
+      background: rgba(16, 185, 129, 0.2);
+      color: var(--success);
+      border: 1px solid var(--success);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 20px 10px;
+      color: var(--subtext);
+      font-size: 12px;
+      border: 1px dashed var(--border);
+      border-radius: 8px;
+    }
+
+    .footer {
+      margin-top: 12px;
+      padding-top: 8px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--subtext);
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="header-title">
+      <div id="statusDot" class="header-icon"></div>
+      WebLogic Monitor
+    </div>
+    <button id="openDashboardBtn" class="btn-dashboard">
+      🚀 Command Center Prime
+    </button>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-box">
+      <div id="criticalCount" class="stat-val critical">0</div>
+      <div class="stat-lbl">Critical</div>
+    </div>
+    <div class="stat-box">
+      <div id="warningCount" class="stat-val warning">0</div>
+      <div class="stat-lbl">Warning</div>
+    </div>
+    <div class="stat-box">
+      <div id="domainCount" class="stat-val healthy">0</div>
+      <div class="stat-lbl">Active Tabs</div>
+    </div>
+  </div>
+
+  <div class="section-title">Active Monitored Domains</div>
+  <div id="domainList" class="domain-list">
+    <div class="empty-state">Loading active WebLogic domains...</div>
+  </div>
+
+  <div class="footer">
+    <span>© 2026 WLMonitor v3.0. All Rights Reserved.</span>
+    <span style="color:#60a5fa;font-weight:700;">👑 Created by Mashkoor Alam</span>
+  </div>
+
+  <script src="src/settings.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
