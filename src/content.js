@@ -117,6 +117,28 @@
     }
   }
 
+  function isWebLogicConsolePage() {
+    const href = (location.href || "").toLowerCase();
+    const title = (document.title || "").toLowerCase();
+
+    // Check WebLogic URL patterns
+    if (href.includes("/console") || href.includes("console.portal") || href.includes(":7001") || href.includes(":7002")) {
+      return true;
+    }
+
+    // Check WebLogic DOM table or Title
+    if (document.querySelector("#genericTableFormtable") || document.querySelector("tr.rowEven, tr.rowOdd") || title.includes("weblogic") || title.includes("summary of servers")) {
+      return true;
+    }
+
+    return false;
+  }
+
+  // 🛑 Block execution on non-WebLogic websites (YouTube, Google, etc.)
+  if (!isWebLogicConsolePage()) {
+    return;
+  }
+
   try {
     chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       if (msg && msg.type === "FORCE_SCAN") {
