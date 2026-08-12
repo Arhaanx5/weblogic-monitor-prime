@@ -28,8 +28,14 @@
   "content_scripts": [
     {
       "matches": [
-        "http://*/*",
-        "https://*/*"
+        "http://*:7001/*",
+        "https://*:7001/*",
+        "http://*:7002/*",
+        "https://*:7002/*",
+        "http://*/*/console/*",
+        "https://*/*/console/*",
+        "http://*/*console.portal*",
+        "https://*/*console.portal*"
       ],
       "css": [
         "css/style.css"

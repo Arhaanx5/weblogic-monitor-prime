@@ -11,6 +11,12 @@ const WLUI = (() => {
   let container = null;
 
   function createWidget() {
+    const href = (window.location && window.location.href) ? window.location.href.toLowerCase() : "";
+    const title = (document.title || "").toLowerCase();
+    if (!href.includes("/console") && !href.includes(":7001") && !href.includes(":7002") && !href.includes("console.portal") && !title.includes("summary of servers")) {
+      return; // 🛑 Block floating widget on YouTube, GitHub, Google, etc.!
+    }
+
     if (document.getElementById("wl-monitor-widget")) return;
 
     container = document.createElement("div");
