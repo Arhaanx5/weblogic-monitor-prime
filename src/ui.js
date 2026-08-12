@@ -494,8 +494,24 @@ const WLUI = (() => {
     }
   }
 
+  function isWebLogicConsolePage() {
+    const href = (location.href || "").toLowerCase();
+    const title = (document.title || "").toLowerCase();
+
+    if (href.includes("/console") || href.includes("console.portal") || href.includes(":7001") || href.includes(":7002")) {
+      return true;
+    }
+
+    if (document.querySelector("#genericTableFormtable") || document.querySelector("tr.rowEven, tr.rowOdd") || title.includes("weblogic") || title.includes("summary of servers")) {
+      return true;
+    }
+
+    return false;
+  }
+
   return {
     init: () => {
+      if (!isWebLogicConsolePage()) return;
       if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", createWidget);
       } else {
@@ -508,9 +524,15 @@ const WLUI = (() => {
 
 window.WLUI = WLUI;
 
-// Auto-initialize widget on content script load
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", () => WLUI.init());
-} else {
-  WLUI.init();
+// Auto-initialize widget ONLY on WebLogic Admin Console pages
+if (typeof location !== "undefined") {
+  const href = (location.href || "").toLowerCase();
+  const title = (document.title || "").toLowerCase();
+  if (href.includes("/console") || href.includes("console.portal") || href.includes(":7001") || href.includes(":7002") || title.includes("weblogic") || title.includes("summary of servers")) {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", () => WLUI.init());
+    } else {
+      WLUI.init();
+    }
+  }
 }
