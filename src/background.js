@@ -331,8 +331,11 @@ function parseWebLogicServerHTML(htmlText) {
 function isWebLogicTab(tab) {
   if (!tab || !tab.url) return false;
   const url = tab.url.toLowerCase();
-  const port = (() => { try { return new URL(tab.url).port; } catch(e) { return ""; } })();
-  if (port === "7002") return false; // UAT blocked
+  const host = (() => { try { return new URL(tab.url).host.toLowerCase(); } catch(e) { return ""; } })();
+
+  // 🛑 Block ALL UAT / Non-Prod tabs (Port 7002, IP 172.17., keyword 'uat', custom blacklists)
+  if (!isProdUrlOrHost(url, host)) return false;
+
   return url.includes("/console") || url.includes("loginform.jsp") || url.includes("console.portal");
 }
 
