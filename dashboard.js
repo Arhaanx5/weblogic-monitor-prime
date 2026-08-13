@@ -387,14 +387,18 @@ document.addEventListener("DOMContentLoaded", () => {
   try {
     if (typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.onMessage) {
       chrome.runtime.onMessage.addListener((msg) => {
-        if (msg) {
+        if (msg && (msg.type === "LIVE_SYNC_TRIGGER" || msg.type === "DOMAINS_UPDATED")) {
           fetchData();
         }
       });
     }
   } catch (e) {}
 
+  let fetchTimer = null;
   function fetchData() {
+    if (fetchTimer) return;
+    fetchTimer = setTimeout(() => { fetchTimer = null; }, 1000);
+
     syncPrivacyAndMaintenanceUI();
 
     try {
