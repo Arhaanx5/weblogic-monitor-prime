@@ -11,6 +11,7 @@ let db = null;
 let domainStateMap = {};
 let persistTimer = null;
 let broadcastTimer = null; // ✅ FIX 4: Debounce timer for broadcastSync
+let lastRetentionNoticeTime = 0; // ✅ FIX: Declare retention notice timestamp
 
 function cleanDomainKey(key) {
   if (!key) return "UNKNOWN_DOMAIN";
@@ -754,6 +755,10 @@ function broadcastSync(payload) {
     chrome.runtime.sendMessage({
       type: "LIVE_SYNC_TRIGGER",
       instantPayload: payload || null
+    }, () => {
+      if (chrome.runtime.lastError) {
+        // Silently suppress receiving end does not exist warning when popup/dashboard is closed
+      }
     });
   } catch (e) {}
   broadcastTimer = setTimeout(() => { broadcastTimer = null; }, 100);
