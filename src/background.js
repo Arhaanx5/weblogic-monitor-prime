@@ -21,13 +21,17 @@ async function setupOffscreenDocument() {
       if (!hasDoc) {
         await chrome.offscreen.createDocument({
           url: "src/offscreen.html",
-          reasons: ["BLOB"],
+          reasons: ["WORKERS"],
           justification: "24/7 High-Availability WebLogic 3-Second Background Polling Engine"
         });
         console.log("[WLMonitor SW] 🚀 Offscreen 24/7 Unthrottled Engine Active!");
+      } else {
+        console.log("[WLMonitor SW] 🚀 Offscreen Document already active.");
       }
     }
-  } catch (err) {}
+  } catch (err) {
+    console.error("[WLMonitor SW] Offscreen creation error:", err);
+  }
 }
 
 setupOffscreenDocument();
