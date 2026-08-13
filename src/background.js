@@ -249,23 +249,23 @@ async function pollDomainDirectly(domainObj) {
         }
       }
 
-      // 🧠 Smart Cache Evaporation: If hash changed or incident active, update immediately
+      // ⚡ Always update heartbeat timestamp on successful poll tick!
+      domainStateMap[cleanKey] = {
+        ...domainStateMap[cleanKey],
+        domainKey: cleanKey,
+        unreachable: false,
+        nodes: parsedNodes,
+        consoleLastRefreshed: `Live (3s): ${new Date().toLocaleTimeString()}`,
+        lastScanTime: Date.now(),
+        lastUpdated: Date.now()
+      };
+
       if (currentHash !== previousHash || hasActiveIncident(parsedNodes)) {
         lastStateHash.set(cleanKey, currentHash);
-
-        domainStateMap[cleanKey] = {
-          ...domainStateMap[cleanKey],
-          domainKey: cleanKey,
-          unreachable: false,
-          nodes: parsedNodes,
-          consoleLastRefreshed: `Live (3s): ${new Date().toLocaleTimeString()}`,
-          lastScanTime: Date.now(),
-          lastUpdated: Date.now()
-        };
-
         persistDomainState();
-        broadcastSync({ domainKey: cleanKey, nodes: parsedNodes });
       }
+
+      broadcastSync({ domainKey: cleanKey, nodes: parsedNodes });
     }
   } catch (err) {
     domainStateMap[cleanKey] = {
