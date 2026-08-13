@@ -240,9 +240,18 @@ async function pollDomainDirectly(domainObj) {
     const htmlText = await response.text();
     const parsedNodes = parseWebLogicServerHTML(htmlText);
 
-    if (parsedNodes && Object.keys(parsedNodes).length > 0) {
+    console.log(`[WLMonitor SW Poll] Key: ${cleanKey} | Status: ${response.status} | FinalURL: ${response.url} | Parsed: ${Object.keys(parsedNodes || {}).length} nodes`);
+
+    let finalNodes = parsedNodes;
+    if (!finalNodes || Object.keys(finalNodes).length === 0) {
+      if (domainStateMap[cleanKey] && domainStateMap[cleanKey].nodes && Object.keys(domainStateMap[cleanKey].nodes).length > 0) {
+        finalNodes = domainStateMap[cleanKey].nodes;
+      }
+    }
+
+    if (finalNodes && Object.keys(finalNodes).length > 0) {
       // Compute 2-Tier Differential Cache Hash
-      const currentHash = computeStateHash(parsedNodes);
+      const currentHash = computeStateHash(finalNodes);
       const previousHash = lastStateHash.get(cleanKey);
 
       let globalThreshold = 70;
@@ -251,8 +260,8 @@ async function pollDomainDirectly(domainObj) {
       }
 
       // Check Sockets & Hysteresis Thresholds
-      for (const nName in parsedNodes) {
-        const node = parsedNodes[nName];
+      for (const nName in finalNodes) {
+        const node = finalNodes[nName];
         const nodeKey = `${cleanKey}_${nName}`;
         const nodeSockets = node.sockets || 0;
         const isHysteresisActive = socketHysteresisMap.get(nodeKey) || false;
@@ -277,18 +286,18 @@ async function pollDomainDirectly(domainObj) {
         ...domainStateMap[cleanKey],
         domainKey: cleanKey,
         unreachable: false,
-        nodes: parsedNodes,
+        nodes: finalNodes,
         consoleLastRefreshed: `Live (3s): ${new Date().toLocaleTimeString()}`,
         lastScanTime: Date.now(),
         lastUpdated: Date.now()
       };
 
-      if (currentHash !== previousHash || hasActiveIncident(parsedNodes)) {
+      if (currentHash !== previousHash || hasActiveIncident(finalNodes)) {
         lastStateHash.set(cleanKey, currentHash);
         persistDomainState();
       }
 
-      broadcastSync({ domainKey: cleanKey, nodes: parsedNodes });
+      broadcastSync({ domainKey: cleanKey, nodes: finalNodes });
     }
   } catch (err) {
     domainStateMap[cleanKey] = {
