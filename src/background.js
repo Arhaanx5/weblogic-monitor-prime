@@ -191,8 +191,13 @@ async function pollDomainDirectly(domainObj) {
   try {
     const targetUrl = domainObj.url;
     let consoleUrl = targetUrl;
-    if (!consoleUrl.includes("/console")) {
-      consoleUrl = targetUrl.replace(/\/+$/, "") + "/console/console.portal?_nfpb=true&_pageLabel=CoreServerServerTablePage";
+    try {
+      const u = new URL(targetUrl);
+      consoleUrl = `${u.protocol}//${u.host}/console/console.portal?_nfpb=true&_pageLabel=CoreServerServerTablePage`;
+    } catch (e) {
+      if (!consoleUrl.includes("CoreServerServerTablePage")) {
+        consoleUrl = targetUrl.replace(/\/+$/, "").replace(/\/console.*$/, "") + "/console/console.portal?_nfpb=true&_pageLabel=CoreServerServerTablePage";
+      }
     }
 
     const response = await fetch(consoleUrl, {
