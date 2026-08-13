@@ -13,6 +13,25 @@ let persistTimer = null;
 let broadcastTimer = null; // ✅ FIX 4: Debounce timer for broadcastSync
 let lastRetentionNoticeTime = 0; // ✅ FIX: Declare retention notice timestamp
 
+// ⚡ 24/7 UNTHROTTLED OFFSCREEN ENGINE INITIALIZATION
+async function setupOffscreenDocument() {
+  try {
+    if (chrome.offscreen && chrome.offscreen.hasDocument) {
+      const hasDoc = await chrome.offscreen.hasDocument();
+      if (!hasDoc) {
+        await chrome.offscreen.createDocument({
+          url: "src/offscreen.html",
+          reasons: ["BLOB"],
+          justification: "24/7 High-Availability WebLogic 3-Second Background Polling Engine"
+        });
+        console.log("[WLMonitor SW] 🚀 Offscreen 24/7 Unthrottled Engine Active!");
+      }
+    }
+  } catch (err) {}
+}
+
+setupOffscreenDocument();
+
 function cleanDomainKey(key) {
   if (!key) return "UNKNOWN_DOMAIN";
   let cleaned = String(key)
