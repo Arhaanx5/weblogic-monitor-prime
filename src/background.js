@@ -237,10 +237,32 @@ async function pollDomainDirectly(domainObj) {
       return;
     }
 
-    const htmlText = await response.text();
-    const parsedNodes = parseWebLogicServerHTML(htmlText);
+    let htmlText = await response.text();
+    let parsedNodes = parseWebLogicServerHTML(htmlText);
+
+    // Fallback: If CoreServerServerTablePage returned 0 nodes, fetch original stored targetUrl!
+    if ((!parsedNodes || Object.keys(parsedNodes).length === 0) && targetUrl && targetUrl !== consoleUrl) {
+      try {
+        const resp2 = await fetch(targetUrl, {
+          method: "GET",
+          headers: { "Accept": "text/html,application/xhtml+xml,application/xml" },
+          credentials: "include"
+        });
+        if (resp2.ok) {
+          const html2 = await resp2.text();
+          const p2 = parseWebLogicServerHTML(html2);
+          if (p2 && Object.keys(p2).length > 0) {
+            parsedNodes = p2;
+          }
+        }
+      } catch (e2) {}
+    }
 
     console.log(`[WLMonitor SW Poll] Key: ${cleanKey} | Status: ${response.status} | FinalURL: ${response.url} | Parsed: ${Object.keys(parsedNodes || {}).length} nodes`);
+
+    if (!parsedNodes || Object.keys(parsedNodes).length === 0) {
+      console.log(`[WLMonitor SW Debug HTML] Key: ${cleanKey} | HTML Length: ${htmlText.length} | Snippet: ${htmlText.substring(0, 150).replace(/\s+/g, " ")}`);
+    }
 
     let finalNodes = parsedNodes;
     if (!finalNodes || Object.keys(finalNodes).length === 0) {
