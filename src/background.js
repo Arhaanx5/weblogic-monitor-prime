@@ -304,31 +304,44 @@ function hasActiveIncident(nodesObj) {
   return false;
 }
 
-// Ultra-Fast Stream Regex Parser (5ms execution time)
+// Ultra-Fast Stream Regex Parser (5ms execution time) - Handles all WebLogic 10g/12c/14c table formats
 function parseWebLogicServerHTML(htmlText) {
   if (!htmlText) return {};
   const nodes = {};
 
-  const rowRegex = /<tr class="(?:rowEven|rowOdd)">[\s\S]*?<a[^>]*>([^<]+)<\/a>[\s\S]*?<\/tr>/g;
+  const rowRegex = /<tr class="(?:rowEven|rowOdd)">([\s\S]*?)<\/tr>/gi;
   let rowMatch;
 
   while ((rowMatch = rowRegex.exec(htmlText)) !== null) {
-    const rowHtml = rowMatch[0];
-    const serverName = rowMatch[1] ? rowMatch[1].trim() : "";
-    if (!serverName) continue;
-
-    // Extract cells
-    const cellRegex = /<td[^>]*>([\s\S]*?)<\/td>/g;
+    const rowHtml = rowMatch[1];
+    const cellRegex = /<td[^>]*>([\s\S]*?)<\/td>/gi;
     const cells = [];
     let cellMatch;
     while ((cellMatch = cellRegex.exec(rowHtml)) !== null) {
       cells.push(cellMatch[1].replace(/<[^>]+>/g, "").trim());
     }
 
-    const health = cells[0] || "OK";
-    const state = cells[1] || "RUNNING";
-    const sockets = parseInt((cells[2] || "0").replace(/[^0-9]/g, ""), 10) || 0;
-    const stuckThreads = cells[3] || "";
+    if (cells.length < 2) continue;
+
+    const serverName = cells[0];
+    if (!serverName || /^name$/i.test(serverName) || /^server$/i.test(serverName)) continue;
+
+    let health = "OK";
+    let state = "RUNNING";
+    let sockets = 0;
+    let stuckThreads = "";
+
+    // Find health/state/sockets by value inspection
+    for (let i = 1; i < cells.length; i++) {
+      const c = cells[i];
+      if (/^(OK|CRITICAL|FAILED|WARN|WARNING|HEALTH_OK)$/i.test(c)) {
+        health = c;
+      } else if (/^(RUNNING|SHUTDOWN|ADMIN|STANDBY|STARTING)$/i.test(c)) {
+        state = c;
+      } else if (/^\d+$/.test(c)) {
+        if (sockets === 0) sockets = parseInt(c, 10);
+      }
+    }
 
     const isCritical = state !== "RUNNING" || health.toUpperCase().includes("CRITICAL") || health.toUpperCase().includes("FAILED");
     const isWarning = health.toUpperCase().includes("WARN") || (stuckThreads && stuckThreads.trim() !== "");
