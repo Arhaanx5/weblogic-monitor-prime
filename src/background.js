@@ -375,7 +375,7 @@ function parseWebLogicServerHTML(htmlText) {
     const cells = [];
     let cellMatch;
     while ((cellMatch = cellRegex.exec(rowHtml)) !== null) {
-      const cleanText = cellMatch[1].replace(/<[^>]+>/g, "").replace(/&nbsp;/gi, " ").trim();
+      const cleanText = cellMatch[1].replace(/<[^>]+>/g, "").replace(/&nbsp;/gi, " ").replace(/&#40;/gi, "(").replace(/&#41;/gi, ")").trim();
       if (cleanText) cells.push(cleanText);
     }
 
