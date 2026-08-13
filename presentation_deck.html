@@ -505,16 +505,18 @@
         <h2 class="slide-title">Intelligent Alerting: Hysteresis & VPN Protection</h2>
       </div>
       <div class="slide-body">
-        <div class="column">
-          <h3>🚨 70-Socket Hysteresis Algorithm</h3>
+          <h3>🚨 The Active Alerting & Health Matrix</h3>
           <p class="tech-desc">
-            When server socket load hovers right at the threshold boundary (e.g., oscillating between 69 and 71 Sockets), a simple threshold triggers alarms repeatedly, causing alert fatigue.
+            <strong>The 70-Socket Warning Zone:</strong> 70 sockets is not the hard freezing point. Instead, it is a strict **Early-Warning Threshold** to keep NOC engineers active, alerted, and prepared for threat investigation.
           </p>
           <p class="tech-desc">
-            <strong>Hysteresis Logic:</strong> Alarms are triggered strictly when sockets breach **&gt; 70** (CRITICAL). However, the status only returns to normal when load drops below the recovery boundary of **&lt; 65** Sockets.
+            <strong>The Actual Freezing Point (200 - 500+ Sockets):</strong> Sockets gradually increase under heavy loads; server hangs or thread freezes only occur when sockets breach the **200 to 500+ range**.
+          </p>
+          <p class="tech-desc">
+            <strong>Compound Failure Trigger:</strong> Production trouble is signaled when **both** metrics degrade: socket counts breach the warning threshold, AND WebLogic health changes to `WARNING` or `FAILED` (`OVERLOADED` or `NOT REACHABLE`).
           </p>
           <div class="tech-highlight amber">
-            <strong>Hysteresis Buffer:</strong> Sockets fluctuating in the 65-70 zone do not trigger repeat sirens or toggle the alarm state.
+            <strong>Hysteresis Zone:</strong> Siren triggers at >70 and clears strictly at <65 to prevent alarm toggling during small load oscillations.
           </div>
         </div>
         <div class="column">
