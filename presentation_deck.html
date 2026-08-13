@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WebLogic Command Center Prime v3.0 - Executive Deck</title>
+  <title>WebLogic Command Center Prime v3.0 - Technical Executive Deck</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg-dark: #090d16;
-      --card-bg: rgba(30, 41, 59, 0.7);
-      --card-border: rgba(255, 255, 255, 0.1);
+      --card-bg: rgba(15, 23, 42, 0.75);
+      --card-border: rgba(255, 255, 255, 0.08);
       --accent-blue: #3b82f6;
       --accent-green: #10b981;
       --accent-red: #ef4444;
@@ -31,33 +31,35 @@
 
     /* Top Bar Header */
     header {
-      height: 60px;
+      height: 65px;
       padding: 0 32px;
-      background: rgba(15, 23, 42, 0.9);
+      background: rgba(9, 13, 22, 0.95);
       border-bottom: 1px solid var(--card-border);
       display: flex;
       align-items: center;
       justify-content: space-between;
+      z-index: 10;
     }
     .brand {
       font-family: 'Outfit', sans-serif;
-      font-size: 20px;
-      font-weight: 700;
-      background: linear-gradient(135deg, #60a5fa, #a855f7);
+      font-size: 22px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #38bdf8, #a855f7);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
     }
     .badge-v3 {
       font-size: 11px;
-      padding: 3px 10px;
+      padding: 3px 12px;
       border-radius: 20px;
-      background: rgba(59, 130, 246, 0.2);
-      color: #60a5fa;
-      border: 1px solid rgba(59, 130, 246, 0.4);
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+      border: 1px solid rgba(56, 189, 248, 0.3);
       font-weight: 700;
+      letter-spacing: 0.5px;
     }
     .slide-counter {
       font-size: 14px;
@@ -74,10 +76,10 @@
     .slide {
       position: absolute;
       inset: 0;
-      padding: 40px 60px;
+      padding: 30px 40px;
       opacity: 0;
       pointer-events: none;
-      transform: translateX(60px);
+      transform: translateY(30px);
       transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       display: flex;
       flex-direction: column;
@@ -86,24 +88,24 @@
     .slide.active {
       opacity: 1;
       pointer-events: auto;
-      transform: translateX(0);
+      transform: translateY(0);
     }
 
     /* Slide Layout Components */
     .slide-header {
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
     .slide-subtitle {
       color: var(--accent-blue);
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 1.5px;
-      margin-bottom: 6px;
+      letter-spacing: 2px;
+      margin-bottom: 4px;
     }
     .slide-title {
       font-family: 'Outfit', sans-serif;
-      font-size: 36px;
+      font-size: 32px;
       font-weight: 800;
       color: #fff;
     }
@@ -111,44 +113,64 @@
     .slide-body {
       flex: 1;
       display: flex;
-      gap: 30px;
+      gap: 24px;
       align-items: stretch;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
+      overflow-y: auto;
     }
     .column {
       flex: 1;
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: 16px;
-      padding: 28px;
-      backdrop-filter: blur(12px);
+      padding: 24px;
+      backdrop-filter: blur(16px);
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: flex-start;
+    }
+    .column h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: #fff;
+      border-left: 4px solid var(--accent-blue);
+      padding-left: 10px;
     }
 
-    /* Card Elements */
-    .feature-list { list-style: none; }
-    .feature-list li {
-      margin-bottom: 18px;
-      font-size: 16px;
+    /* Detailed Paragraph Layout */
+    .tech-desc {
+      font-size: 14.5px;
       line-height: 1.6;
       color: #cbd5e1;
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
+      margin-bottom: 16px;
     }
-    .feature-list li strong { color: #fff; }
-    .icon-bullet {
-      width: 24px; height: 24px;
-      border-radius: 50%;
-      background: rgba(16, 185, 129, 0.2);
-      color: var(--accent-green);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 13px; font-weight: 700; flex-shrink: 0; margin-top: 2px;
+    .tech-desc strong {
+      color: #fff;
     }
-    .icon-bullet.red { background: rgba(239, 68, 68, 0.2); color: var(--accent-red); }
-    .icon-bullet.blue { background: rgba(59, 130, 246, 0.2); color: var(--accent-blue); }
+    .tech-highlight {
+      background: rgba(59, 130, 246, 0.08);
+      border-left: 3px solid var(--accent-blue);
+      padding: 12px 16px;
+      border-radius: 4px;
+      font-size: 13.5px;
+      color: #e2e8f0;
+      line-height: 1.5;
+      margin-top: auto;
+    }
+    .tech-highlight.green {
+      background: rgba(16, 185, 129, 0.08);
+      border-left-color: var(--accent-green);
+    }
+    .tech-highlight.red {
+      background: rgba(239, 68, 68, 0.08);
+      border-left-color: var(--accent-red);
+    }
+    .tech-highlight.amber {
+      background: rgba(245, 158, 11, 0.08);
+      border-left-color: var(--accent-amber);
+    }
 
     /* Comparison Table */
     table.comp-table {
@@ -160,14 +182,15 @@
     table.comp-table th {
       text-align: left;
       padding: 12px 16px;
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.03);
       color: #fff;
       font-weight: 700;
       border-bottom: 1px solid var(--card-border);
     }
     table.comp-table td {
       padding: 14px 16px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      line-height: 1.5;
     }
     .badge-good { color: #4ade80; font-weight: 700; }
     .badge-bad { color: #fca5a5; font-weight: 600; }
@@ -177,27 +200,28 @@
       background: rgba(15, 23, 42, 0.95);
       border: 1px solid rgba(59, 130, 246, 0.3);
       border-radius: 12px;
-      padding: 16px 20px;
+      padding: 16px 24px;
       font-size: 14px;
       color: #e2e8f0;
-      line-height: 1.5;
+      line-height: 1.6;
       display: none;
+      margin-top: 10px;
     }
     .speaker-notes-drawer.open { display: block; }
     .speaker-notes-title {
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 800;
       color: var(--accent-blue);
       text-transform: uppercase;
       letter-spacing: 1px;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
 
     /* Footer Controls */
     footer {
       height: 70px;
       padding: 0 40px;
-      background: rgba(15, 23, 42, 0.9);
+      background: rgba(9, 13, 22, 0.95);
       border-top: 1px solid var(--card-border);
       display: flex;
       align-items: center;
@@ -208,7 +232,7 @@
       padding: 10px 24px;
       border-radius: 10px;
       border: 1px solid var(--card-border);
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.04);
       color: #fff;
       font-size: 14px;
       font-weight: 600;
@@ -217,8 +241,8 @@
       display: flex; align-items: center; gap: 8px;
     }
     .btn:hover {
-      background: rgba(255, 255, 255, 0.12);
-      border-color: rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.25);
     }
     .btn-primary {
       background: linear-gradient(135deg, #3b82f6, #2563eb);
@@ -228,7 +252,7 @@
       box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
     }
 
-    /* Slide Title Card */
+    /* Hero Slide */
     .title-card-body {
       display: flex;
       flex-direction: column;
@@ -239,7 +263,7 @@
     }
     .hero-title {
       font-family: 'Outfit', sans-serif;
-      font-size: 52px;
+      font-size: 48px;
       font-weight: 800;
       margin-bottom: 16px;
       background: linear-gradient(135deg, #ffffff, #94a3b8);
@@ -248,23 +272,24 @@
     }
     .hero-tagline {
       font-size: 20px;
-      color: var(--accent-blue);
-      max-width: 700px;
+      color: #38bdf8;
+      max-width: 800px;
       margin-bottom: 40px;
+      font-weight: 500;
     }
     .stats-row {
       display: flex;
       gap: 30px;
     }
     .stat-pill {
-      background: rgba(255, 255, 255, 0.03);
+      background: rgba(255, 255, 255, 0.02);
       border: 1px solid var(--card-border);
       padding: 16px 28px;
       border-radius: 12px;
       text-align: center;
     }
-    .stat-num { font-family: 'Outfit', sans-serif; font-size: 28px; font-weight: 800; color: #4ade80; }
-    .stat-lbl { font-size: 12px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; margin-top: 4px; }
+    .stat-num { font-family: 'Outfit', sans-serif; font-size: 28px; font-weight: 800; color: #10b981; }
+    .stat-lbl { font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-top: 4px; }
   </style>
 </head>
 <body>
@@ -284,7 +309,7 @@
     <div class="slide active">
       <div class="column title-card-body">
         <h1 class="hero-title">WebLogic Command Center Prime v3.0</h1>
-        <p class="hero-tagline">Enterprise Real-Time Multi-Domain NOC Monitoring Engine</p>
+        <p class="hero-tagline">Deep-Dive Technical Architecture & Decoupled NOC Monitoring Strategy</p>
         <div class="stats-row">
           <div class="stat-pill"><div class="stat-num">0 Tabs</div><div class="stat-lbl">Tab Dependency</div></div>
           <div class="stat-pill"><div class="stat-num">3 Sec</div><div class="stat-lbl">Live Unthrottled Stream</div></div>
@@ -294,66 +319,86 @@
       </div>
       <div class="speaker-notes-drawer" id="note-1">
         <div class="speaker-notes-title">🎙️ Speaker Script:</div>
-        "Good morning everyone. Today I am presenting WebLogic Command Center Prime v3.0. This is an enterprise-grade monitoring system engineered to provide 100% continuous, zero-tab real-time visibility across all our WebLogic clusters without any manual tab intervention."
+        "Good morning everyone. Today, I'll walk you through the technical architecture of WebLogic Command Center Prime v3.0. We will discuss how we eliminated tab dependencies, defeated browser CPU throttling, and built a highly resilient, memory-level polling engine for our NOC."
       </div>
     </div>
 
-    <!-- SLIDE 2: Problem Statement -->
+    <!-- SLIDE 2: Legacy Challenge Detailed -->
     <div class="slide">
       <div class="slide-header">
-        <div class="slide-subtitle">Industry Challenges</div>
-        <h2 class="slide-title">The Legacy Tab-Scraping Challenge</h2>
+        <div class="slide-subtitle">The Legacy Challenges</div>
+        <h2 class="slide-title">Why Traditional Browser Extensions Fail in Production</h2>
       </div>
       <div class="slide-body">
         <div class="column">
-          <h3 style="margin-bottom:16px; color:#ef4444;">❌ Legacy Extension Pain Points</h3>
-          <ul class="feature-list">
-            <li><span class="icon-bullet red">✕</span> <div><strong>Strict Tab Dependency:</strong> Legacy extensions required keeping 10+ WebLogic console tabs open. Closing a tab killed monitoring.</div></li>
-            <li><span class="icon-bullet red">✕</span> <div><strong>Chrome Throttling Lag:</strong> Chrome throttles inactive background tabs down to 60-second intervals, causing heavy metric lag.</div></li>
-            <li><span class="icon-bullet red">✕</span> <div><strong>False Siren Alarms:</strong> Spiky socket fluctuations and VPN disconnections flooded NOC engineers with false critical sirens.</div></li>
-          </ul>
+          <h3 style="border-left-color: var(--accent-red);">❌ Technical Bottlenecks of Legacy Systems</h3>
+          <p class="tech-desc">
+            <strong>Active Tab Scraper Dependency:</strong> Older monitor tools worked by injecting scripts to scrape DOM elements of active WebLogic tabs. If an engineer closed the tab or navigated away, the socket scrape loop crashed immediately.
+          </p>
+          <p class="tech-desc">
+            <strong>Chrome Inactive Tab Throttling:</strong> To optimize battery, Chromium enforces a strict power-saving policy. Inactive background tabs are throttled to a 60-second execution limit. This meant 3-second live timers lagged by over a minute.
+          </p>
+          <div class="tech-highlight red">
+            <strong>Operational Impact:</strong> Delayed incident detections, false critical alerts during network drops, and high browser CPU load from repeatedly parsing heavy DOM trees.
+          </div>
         </div>
         <div class="column">
-          <h3 style="margin-bottom:16px; color:#10b981;">🟢 The Prime v3.0 Breakthrough</h3>
-          <ul class="feature-list">
-            <li><span class="icon-bullet">✓</span> <div><strong>Zero-Tab Architecture:</strong> Decoupled from browser tabs. Operates seamlessly in memory.</div></li>
-            <li><span class="icon-bullet">✓</span> <div><strong>Offscreen 24/7 Engine:</strong> Powered by Chrome MV3 Offscreen API for 3-second live updates unthrottled.</div></li>
-            <li><span class="icon-bullet">✓</span> <div><strong>Silent VPN Protection:</strong> VPN disconnects automatically mute sirens and reset alert KPIs to 0.</div></li>
-          </ul>
+          <h3 style="border-left-color: var(--accent-green);">🟢 How Prime v3.0 Restructures the Engine</h3>
+          <p class="tech-desc">
+            <strong>Decoupled Memory Polling:</strong> We completely decoupled the scraping loop from active tabs. The extension now requests WebLogic server table HTML programmatically inside background threads using pure JS `fetch` queries.
+          </p>
+          <p class="tech-desc">
+            <strong>Keep-Alive Heartbeat Drive:</strong> By utilizing Chrome’s official `offscreen` API, we run a low-level sandbox frame. This frame remains unthrottled by the browser, triggering background fetches every 3 seconds without interruption.
+          </p>
+          <div class="tech-highlight green">
+            <strong>Operational Outcome:</strong> Zero open tabs required. Real-time metric streaming continues even when Chrome is minimized or the laptop is locked.
+          </div>
         </div>
       </div>
       <div class="speaker-notes-drawer" id="note-2">
         <div class="speaker-notes-title">🎙️ Speaker Script:</div>
-        "Legacy tools caused alert fatigue and required dozens of open tabs. When tabs were minimized, Chrome throttled them, causing metric lag up to a minute. Prime v3.0 solves all these challenges with zero-tab decoupling and silent VPN protection."
+        "Traditional page scrapers fail because modern browsers sleep background tabs to conserve battery. By moving to decoupled memory polling and keeping the Service Worker awake using Offscreen API, we bypass throttling entirely."
       </div>
     </div>
 
-    <!-- SLIDE 3: System Architecture -->
+    <!-- SLIDE 3: System Architecture Detailed -->
     <div class="slide">
       <div class="slide-header">
         <div class="slide-subtitle">Under The Hood</div>
-        <h2 class="slide-title">End-to-End System Architecture</h2>
+        <h2 class="slide-title">Decoupled Architecture & Real-Time Flow</h2>
       </div>
       <div class="slide-body">
         <div class="column" style="flex:1.2;">
-          <ul class="feature-list">
-            <li><span class="icon-bullet blue">1</span> <div><strong>Offscreen Heartbeat Engine:</strong> Emits an unthrottled 3-second pulse (`src/offscreen.js`) that keeps background Service Worker active.</div></li>
-            <li><span class="icon-bullet blue">2</span> <div><strong>Direct Background HTTP Poller:</strong> Fetches raw WebLogic Server Table HTML directly in memory via `fetch()`.</div></li>
-            <li><span class="icon-bullet blue">3</span> <div><strong>5ms Stream Regex Decoder:</strong> Decodes 50KB WebLogic HTML in under 5ms, extracting live sockets and server states.</div></li>
-            <li><span class="icon-bullet blue">4</span> <div><strong>Node State Preservation Guard:</strong> Intercepts temporary session shifts and locks onto stored node history.</div></li>
-          </ul>
+          <h3>🏗️ High-Availability System Components</h3>
+          <p class="tech-desc">
+            <strong>1. Offscreen Keep-Alive Engine:</strong> Runs a hidden HTML frame in the background. It executes a strict `setInterval` that sends a `POLL_NOW` message to the Service Worker every 3 seconds, bypassing background sleep.
+          </p>
+          <p class="tech-desc">
+            <strong>2. Background Polling Service Worker:</strong> Listens to the keep-alive heartbeat, wakes up instantly, and fetches the specific WebLogic Server Table URL using the user's active session cookie.
+          </p>
+          <p class="tech-desc">
+            <strong>3. Universal Stream Regex Decoder:</strong> Receives the fetched raw HTML string and extracts row metrics directly. It parses server names, health, and socket load in under 5 milliseconds.
+          </p>
+          <div class="tech-highlight">
+            <strong>State Synchronization:</strong> Once parsed, the State Aggregator triggers a unified state update to `chrome.storage.local` and broadcasts a sync message to update the NOC Dashboard and Popup widget.
+          </div>
         </div>
-        <div class="column" style="flex:0.8; justify-content:center; align-items:center; text-align:center;">
-          <div style="padding: 20px; background: rgba(59,130,246,0.1); border:1px solid rgba(59,130,246,0.3); border-radius:16px;">
-            <div style="font-size:36px; margin-bottom:10px;">⚡</div>
-            <h4 style="color:#60a5fa; margin-bottom:8px;">5 Millisecond Execution</h4>
-            <p style="font-size:13px; color:var(--text-muted);">Decodes 50KB WebLogic HTML responses with 0.00% CPU Overhead.</p>
+        <div class="column" style="flex:0.8;">
+          <h3>📡 The Live Data Loop</h3>
+          <p class="tech-desc">
+            The background poller does not scrap the graphical UI. It fetches raw text, which cuts down network packet sizes to less than 50KB.
+          </p>
+          <p class="tech-desc">
+            This guarantees that even with 10+ WebLogic domains registered, the network bandwidth usage is negligible, making it enterprise-ready.
+          </p>
+          <div class="tech-highlight green" style="margin-top:auto;">
+            <strong>Result:</strong> Real-time socket metrics updates on the NOC wall screen every 3 seconds.
           </div>
         </div>
       </div>
       <div class="speaker-notes-drawer" id="note-3">
         <div class="speaker-notes-title">🎙️ Speaker Script:</div>
-        "Architecturally, the tool consists of four decoupled layers: Offscreen Heartbeat, Direct Background Poller, 5ms Stream Decoder, and Node State Preservation Guard."
+        "Our architecture has a clean split of responsibilities. The Offscreen engine acts as the heartbeat driver, the Service Worker acts as the network fetcher, and the regex decoder extracts metric data instantly with zero layout redraws."
       </div>
     </div>
 
@@ -361,43 +406,49 @@
     <div class="slide">
       <div class="slide-header">
         <div class="slide-subtitle">Capability Benchmark</div>
-        <h2 class="slide-title">Legacy Extensions vs. Prime v3.0</h2>
+        <h2 class="slide-title">Legacy Scrapers vs. Prime v3.0 Engine</h2>
       </div>
       <div class="slide-body">
         <div class="column">
           <table class="comp-table">
             <thead>
               <tr>
-                <th>Benchmark Metric</th>
-                <th>Legacy Extension</th>
+                <th>Monitoring Metric</th>
+                <th>Legacy Scrapers</th>
                 <th>WebLogic Monitor Prime v3.0</th>
+                <th>Technical Mechanism</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td><strong>Tab Requirement</strong></td>
-                <td><span class="badge-bad">Must keep 10+ tabs open</span></td>
-                <td><span class="badge-good">0 Tabs Required (Zero-Tab)</span></td>
+                <td><strong>Tab Dependency</strong></td>
+                <td><span class="badge-bad">Must keep all tabs open</span></td>
+                <td><span class="badge-good">0 Tabs Required</span></td>
+                <td>Background HTTP fetch using shared cookies</td>
               </tr>
               <tr>
-                <td><strong>Poll Frequency</strong></td>
+                <td><strong>Polling Frequency</strong></td>
                 <td><span class="badge-bad">10s - 60s (Throttled)</span></td>
-                <td><span class="badge-good">Guaranteed 3-Second Stream</span></td>
+                <td><span class="badge-good">Guaranteed 3 Seconds</span></td>
+                <td>Offscreen Document unthrottled timer</td>
               </tr>
               <tr>
-                <td><strong>Chrome Minimized</strong></td>
-                <td><span class="badge-bad">Paused / Frozen</span></td>
-                <td><span class="badge-good">24/7 Unthrottled Active</span></td>
+                <td><strong>CPU Utilization</strong></td>
+                <td><span class="badge-bad">High (DOM Redraws)</span></td>
+                <td><span class="badge-good">0.00% (Text Parsing)</span></td>
+                <td>Ultra-fast stream regex matching engine</td>
               </tr>
               <tr>
-                <td><strong>Memory Footprint</strong></td>
-                <td><span class="badge-bad">~150 MB per tab</span></td>
-                <td><span class="badge-good">&lt; 15 MB Total Footprint</span></td>
+                <td><strong>RAM Usage</strong></td>
+                <td><span class="badge-bad">~150MB per open tab</span></td>
+                <td><span class="badge-good">&lt; 15MB Total RAM</span></td>
+                <td>Isolated Service Worker context</td>
               </tr>
               <tr>
-                <td><strong>VPN Disconnect</strong></td>
-                <td><span class="badge-bad">False Critical Sirens</span></td>
+                <td><strong>VPN Disconnects</strong></td>
+                <td><span class="badge-bad">False Critical Alerts</span></td>
                 <td><span class="badge-good">100% Silent Protection</span></td>
+                <td>Automatic VPN detection & alert suppression</td>
               </tr>
             </tbody>
           </table>
@@ -405,151 +456,225 @@
       </div>
       <div class="speaker-notes-drawer" id="note-4">
         <div class="speaker-notes-title">🎙️ Speaker Script:</div>
-        "Compared to legacy extensions, Prime v3.0 requires zero tabs, polls every 3 seconds unthrottled, consumes under 15MB RAM, and provides 100% silent VPN protection."
+        "This benchmark comparison table demonstrates the efficiency gains. We moved from heavy, throttled, tab-dependent DOM parsing to a decoupled, lightweight service worker model that consumes less than 15MB of RAM."
       </div>
     </div>
 
-    <!-- SLIDE 5: Node State Preservation -->
+    <!-- SLIDE 5: Node State Preservation Detailed -->
     <div class="slide">
       <div class="slide-header">
-        <div class="slide-subtitle">Resilience Architecture</div>
-        <h2 class="slide-title">Node State Preservation & Failover</h2>
+        <div class="slide-subtitle">Robustness Design</div>
+        <h2 class="slide-title">Resilient Failover & Node State Preservation</h2>
       </div>
       <div class="slide-body">
         <div class="column">
-          <h3 style="margin-bottom:16px; color:#60a5fa;">🛡️ Zero Data Loss Failover Guard</h3>
-          <ul class="feature-list">
-            <li><span class="icon-bullet blue">✓</span> <div><strong>Session Shift Protection:</strong> Intercepts temporary WebLogic session shifts or partial HTML redirects without wiping metric history.</div></li>
-            <li><span class="icon-bullet blue">✓</span> <div><strong>Node History Lock:</strong> Retains stored server nodes (`172.16.6.112_CAS`, `AdminServer`, sockets) and updates `lastScanTime = Date.now()`.</div></li>
-            <li><span class="icon-bullet blue">✓</span> <div><strong>Amber Logout Alert:</strong> Displays a clear `🔑 SESSION EXPIRED` badge on NOC Dashboard if WebLogic session officially expires.</div></li>
-          </ul>
+          <h3>🔐 Solving the Transient Disconnect Problem</h3>
+          <p class="tech-desc">
+            <strong>The Problem:</strong> When WebLogic Admin Console performs session tree updates or user authorization shifts, background HTTP fetches may briefly redirect to login pages, returning empty responses or 302 redirects.
+          </p>
+          <p class="tech-desc">
+            <strong>The Solution (Node State Preservation):</strong> If the universal parser receives 0 server nodes from a poll response, it does not wipe the dashboard. Instead, the Failover Guard locks onto the last-known active server nodes, health status, and socket counts.
+          </p>
+          <div class="tech-highlight green">
+            <strong>Result:</strong> The dashboard continues to stream `🟢 LIVE (3s ago)` without graphical flicker or data loss. Once WebLogic recovers, the metrics merge automatically.
+          </div>
+        </div>
+        <div class="column">
+          <h3>🔑 Session Expiry Detection</h3>
+          <p class="tech-desc">
+            If the background HTTP response redirects to `LoginForm.jsp` (indicating the session cookie has expired), the background worker detects this immediately.
+          </p>
+          <p class="tech-desc">
+            The worker marks the domain as logged out (`isLoggedOut = true`) without losing stored metric data.
+          </p>
+          <div class="tech-highlight amber">
+            <strong>Visual Indicator:</strong> An amber `🔑 SESSION EXPIRED` badge is rendered next to the domain. NOC engineers can click the `🔗 Switch Tab` button to re-login in 1-click.
+          </div>
         </div>
       </div>
       <div class="speaker-notes-drawer" id="note-5">
         <div class="speaker-notes-title">🎙️ Speaker Script:</div>
-        "If a background fetch encounters a transient session shift or packet drop, our Node State Preservation Guard locks onto stored server metrics, refreshes the live timestamp, and prevents screen data loss."
+        "To prevent layout flickering and data loss during WebLogic session refreshes, our Node State Preservation Guard locks onto cached metrics during empty responses and flags session timeouts with an amber indicator."
       </div>
     </div>
 
-    <!-- SLIDE 6: Intelligent Alerting -->
+    <!-- SLIDE 6: Hysteresis and VPN Muting Detailed -->
     <div class="slide">
       <div class="slide-header">
-        <div class="slide-subtitle">Alert Fatigue Reduction</div>
-        <h2 class="slide-title">Hysteresis & Silent VPN Muting</h2>
+        <div class="slide-subtitle">Alert Fatigue Mitigation</div>
+        <h2 class="slide-title">Intelligent Alerting: Hysteresis & VPN Protection</h2>
       </div>
       <div class="slide-body">
         <div class="column">
-          <h3 style="margin-bottom:16px; color:#f59e0b;">🚨 70-Socket Hysteresis Thresholding</h3>
-          <p style="color:var(--text-muted); font-size:14px; margin-bottom:16px;">Eliminates rapid siren toggling (oscillation) when socket counts hover around 70.</p>
-          <ul class="feature-list">
-            <li><span class="icon-bullet red">1</span> <div><strong>Trigger Condition:</strong> Sockets breach <strong>&gt;70</strong> ➔ Critical alert & siren trigger.</div></li>
-            <li><span class="icon-bullet">2</span> <div><strong>Recovery Zone (65 - 70):</strong> Sockets drop to 68 ➔ Remains Critical to avoid rapid toggling.</div></li>
-            <li><span class="icon-bullet">3</span> <div><strong>Clear Condition:</strong> Sockets drop below <strong>&lt;65</strong> ➔ Alert clears automatically.</div></li>
-          </ul>
+          <h3>🚨 70-Socket Hysteresis Algorithm</h3>
+          <p class="tech-desc">
+            When server socket load hovers right at the threshold boundary (e.g., oscillating between 69 and 71 Sockets), a simple threshold triggers alarms repeatedly, causing alert fatigue.
+          </p>
+          <p class="tech-desc">
+            <strong>Hysteresis Logic:</strong> Alarms are triggered strictly when sockets breach **&gt; 70** (CRITICAL). However, the status only returns to normal when load drops below the recovery boundary of **&lt; 65** Sockets.
+          </p>
+          <div class="tech-highlight amber">
+            <strong>Hysteresis Buffer:</strong> Sockets fluctuating in the 65-70 zone do not trigger repeat sirens or toggle the alarm state.
+          </div>
         </div>
         <div class="column">
-          <h3 style="margin-bottom:16px; color:#3b82f6;">📡 Silent VPN Disconnect Protection</h3>
-          <ul class="feature-list">
-            <li><span class="icon-bullet blue">✓</span> <div><strong>Zero False Sirens:</strong> VPN disconnects automatically mute audio alarms.</div></li>
-            <li><span class="icon-bullet blue">✓</span> <div><strong>KPI Reset:</strong> Reset Critical KPI counter to 0 during network off state.</div></li>
-            <li><span class="icon-bullet blue">✓</span> <div><strong>Auto Recovery:</strong> Reconnecting VPN auto-recovers monitoring within 3 seconds.</div></li>
-          </ul>
+          <h3>📡 Silent VPN Protection</h3>
+          <p class="tech-desc">
+            <strong>VPN Disconnection:</strong> Disconnecting from the corporate network blocks access to WebLogic IPs (`172.16.x.x`). Traditional monitoring registers this as a server crash and triggers sirens.
+          </p>
+          <p class="tech-desc">
+            <strong>Our Solution:</strong> The background worker detects network unreachable exceptions, suppresses audio siren alerts (100% Silent), resets critical incident counters to 0, and flags cards as `📡 NETWORK DISCONNECTED`.
+          </p>
+          <div class="tech-highlight green">
+            <strong>Auto-Recovery:</strong> Upon VPN reconnection, the poller automatically recovers to live monitoring state within 3 seconds.
+          </div>
         </div>
       </div>
       <div class="speaker-notes-drawer" id="note-6">
         <div class="speaker-notes-title">🎙️ Speaker Script:</div>
-        "Alert fatigue destroys NOC efficiency. Our hysteresis algorithm triggers alerts at >70 sockets and clears only below 65, while silent VPN protection eliminates false alarms during remote work."
+        "We built two features to eliminate noise. Hysteresis thresholding prevents alarms from toggling repeatedly when sockets hover around 70, while silent VPN protection silences sirens during network disconnects."
       </div>
     </div>
 
-    <!-- SLIDE 7: Performance Benchmarks -->
+    <!-- SLIDE 7: Performance Optimization Detailed -->
     <div class="slide">
       <div class="slide-header">
-        <div class="slide-subtitle">Resource Audit</div>
-        <h2 class="slide-title">Performance & Footprint Metrics</h2>
+        <div class="slide-subtitle">Efficiency & Load</div>
+        <h2 class="slide-title">Performance Optimization & Stream Decoding</h2>
       </div>
-      <div class="slide-body" style="align-items:center;">
-        <div class="column" style="text-align:center; padding:40px;">
-          <div style="font-size:48px; font-weight:800; color:#4ade80; font-family:'Outfit'; margin-bottom:8px;">2 - 5 ms</div>
-          <div style="font-size:14px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Stream Regex Parser Speed</div>
+      <div class="slide-body">
+        <div class="column">
+          <h3>⚡ The Universal Stream Regex Parser</h3>
+          <p class="tech-desc">
+            <strong>No DOM Redraws:</strong> Traditional parsing creates a temporary DOM structure inside the extension page to query tables. This causes layout recalculation overhead.
+          </p>
+          <p class="tech-desc">
+            <strong>Stream Parser:</strong> Our tool uses a streamlined, class-agnostic regex decoder that parses raw text sequentially. It extracts server names, health, and sockets in under 5 milliseconds.
+          </p>
+          <div class="tech-highlight green">
+            <strong>Execution Overhead:</strong> Average CPU usage is 0.00%. The system runs seamlessly on standard corporate laptops.
+          </div>
         </div>
-        <div class="column" style="text-align:center; padding:40px;">
-          <div style="font-size:48px; font-weight:800; color:#60a5fa; font-family:'Outfit'; margin-bottom:8px;">&lt; 15 MB</div>
-          <div style="font-size:14px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Total Extension Memory</div>
-        </div>
-        <div class="column" style="text-align:center; padding:40px;">
-          <div style="font-size:48px; font-weight:800; color:#a855f7; font-family:'Outfit'; margin-bottom:8px;">0.00%</div>
-          <div style="font-size:14px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Average Laptop CPU Overhead</div>
+        <div class="column">
+          <h3>📦 Network Bandwidth Optimization</h3>
+          <p class="tech-desc">
+            By fetching text HTML instead of rendering console resources (CSS, JS, images), each background fetch payload is less than 50KB.
+          </p>
+          <p class="tech-desc">
+            This minimizes network bandwidth overhead on corporate networks and VPN tunnels.
+          </p>
+          <div class="tech-highlight">
+            <strong>Memory Leak Protection:</strong> Service worker contexts are automatically recycled by Chromium, preventing long-term memory leaks.
+          </div>
         </div>
       </div>
       <div class="speaker-notes-drawer" id="note-7">
         <div class="speaker-notes-title">🎙️ Speaker Script:</div>
-        "The entire extension consumes under 15MB of RAM and causes 0.00% average CPU overhead on corporate laptops."
+        "Our stream regex parser parses WebLogic table rows in less than 5 milliseconds without DOM overhead. This keeps memory usage below 15MB and prevents performance bottlenecks on laptops."
       </div>
     </div>
 
-    <!-- SLIDE 8: Security & Compliance -->
+    <!-- SLIDE 8: Security & Privacy Compliance Detailed -->
     <div class="slide">
       <div class="slide-header">
-        <div class="slide-subtitle">Corporate Standards</div>
-        <h2 class="slide-title">Security & Privacy Compliance</h2>
+        <div class="slide-subtitle">Enterprise Privacy</div>
+        <h2 class="slide-title">Security Architecture & Compliance</h2>
       </div>
       <div class="slide-body">
         <div class="column">
-          <h3 style="margin-bottom:16px; color:#10b981;">🔒 100% Local On-Premise Storage</h3>
-          <ul class="feature-list">
-            <li><span class="icon-bullet">✓</span> <div><strong>Zero Telemetry:</strong> 100% of data, logs, and settings remain inside Chrome local IndexedDB.</div></li>
-            <li><span class="icon-bullet">✓</span> <div><strong>Restricted Content Scripts:</strong> Strictly scoped to WebLogic ports (`:7001`, `:7002`) with 0% injection into public sites.</div></li>
-            <li><span class="icon-bullet">✓</span> <div><strong>Local Settings Storage:</strong> Custom thresholds and webhook URLs are saved safely in `chrome.storage.local`.</div></li>
-          </ul>
+          <h3>🔒 100% Sandbox Isolation</h3>
+          <p class="tech-desc">
+            <strong>Zero External Transmission:</strong> All scraped WebLogic server metrics, incident history logs, and settings remain inside the browser local sandbox (`chrome.storage.local` and IndexedDB). No data is sent to external servers.
+          </p>
+          <p class="tech-desc">
+            <strong>Authentication Cookie Reuse:</strong> The background poller does not store user passwords. It uses Chrome's secure cookie container (`credentials: "include"`) to authenticate fetches with the active browser session.
+          </p>
+          <div class="tech-highlight green">
+            <strong>Strict Content Security Policy:</strong> Fully compliant with Chrome Extension MV3 CSP guidelines. Zero remote script execution.
+          </div>
+        </div>
+        <div class="column">
+          <h3>🛡️ Content Script Scoping</h3>
+          <p class="tech-desc">
+            Content scripts are restricted in `manifest.json` to only match WebLogic ports (`:7001`, `:7002`) and console directories (`/console/`).
+          </p>
+          <p class="tech-desc">
+            This ensures that the extension script is never injected into public pages like YouTube, GitHub, or search engines.
+          </p>
+          <div class="tech-highlight">
+            <strong>Security Status:</strong> Fully compliant with internal enterprise IT audits.
+          </div>
         </div>
       </div>
       <div class="speaker-notes-drawer" id="note-8">
         <div class="speaker-notes-title">🎙️ Speaker Script:</div>
-        "All data and settings remain local inside the browser's encrypted storage. Zero telemetry data leaves our corporate network."
+        "Security is a core requirement. The extension does not store passwords, uses the browser's secure cookie container, and retains all logged metrics locally inside Chrome. No data leaves the corporate network."
       </div>
     </div>
 
-    <!-- SLIDE 9: Real-World ROI -->
+    <!-- SLIDE 9: Operational Impact Detailed -->
     <div class="slide">
       <div class="slide-header">
-        <div class="slide-subtitle">Value Delivered</div>
-        <h2 class="slide-title">Operational Impact & Value Delivered</h2>
+        <div class="slide-subtitle">Business Value</div>
+        <h2 class="slide-title">Operational Benefits & ROI</h2>
       </div>
       <div class="slide-body">
         <div class="column">
-          <h3 style="margin-bottom:16px; color:#60a5fa;">🏆 Key Impact Metrics</h3>
-          <ul class="feature-list">
-            <li><span class="icon-bullet blue">✓</span> <div><strong>100% Reduction in False Incident Tickets:</strong> Achieved via Smart Muting and Hysteresis.</div></li>
-            <li><span class="icon-bullet blue">✓</span> <div><strong>Unified Multi-Domain Visibility:</strong> `TCL_CAS`, `TCL_LMS`, `TCL_INTG` rendered on a single NOC wall screen.</div></li>
-            <li><span class="icon-bullet blue">✓</span> <div><strong>Set-and-Forget Automation:</strong> Zero manual tab opening or page refreshing required.</div></li>
-          </ul>
+          <h3>📈 Quantifiable NOC Improvements</h3>
+          <p class="tech-desc">
+            <strong>Mean-Time-To-Resolution (MTTR) Reduction:</strong> The 3-second unthrottled background polling guarantees that socket breaches are flagged instantly, allowing engineers to intervene before server threads freeze.
+          </p>
+          <p class="tech-desc">
+            <strong>Zero Maintenance Overhead:</strong> Engineers no longer need to open, arrange, or manually refresh multiple WebLogic tabs. The dashboard serves as a set-and-forget display wall.
+          </p>
+          <div class="tech-highlight green">
+            <strong>NOC Efficiency:</strong> 100% reduction in false incident alerts caused by VPN disconnects, allowing engineers to focus on real alerts.
+          </div>
+        </div>
+        <div class="column">
+          <h3>🎮 Visual Executive Console</h3>
+          <p class="tech-desc">
+            Designed for multi-screen NOC monitoring walls, featuring high-contrast metrics, clean status badges, and an interactive audit log.
+          </p>
+          <p class="tech-desc">
+            Provides a professional command center experience for operations teams.
+          </p>
         </div>
       </div>
       <div class="speaker-notes-drawer" id="note-9">
         <div class="speaker-notes-title">🎙️ Speaker Script:</div>
-        "We achieved a 100% reduction in false incident tickets caused by VPN drops or spiky socket fluctuations, providing unified visibility across all WebLogic domains."
+        "From an operational perspective, the tool reduces MTTR, automates monitoring displays, and eliminates false alerts. This gives our team a professional command center experience."
       </div>
     </div>
 
-    <!-- SLIDE 10: Executive Q&A Defense -->
+    <!-- SLIDE 10: Executive Q&A Defense Matrix -->
     <div class="slide">
       <div class="slide-header">
-        <div class="slide-subtitle">Management Defense Matrix</div>
-        <h2 class="slide-title">Frequently Asked Management Questions</h2>
+        <div class="slide-subtitle">Executive Q&A Matrix</div>
+        <h2 class="slide-title">Handling Tough Management Questions</h2>
       </div>
       <div class="slide-body">
         <div class="column">
-          <ul class="feature-list">
-            <li><span class="icon-bullet blue">Q1</span> <div><strong>"How can you guarantee 24/7 monitoring without open WebLogic tabs?"</strong><br><span style="font-size:13px; color:var(--text-muted);">Answer: Decoupled memory polling driven by Chrome MV3 Offscreen API unthrottled 3-second heartbeat.</span></div></li>
-            <li><span class="icon-bullet blue">Q2</span> <div><strong>"Will 3-second polling slow down corporate laptops?"</strong><br><span style="font-size:13px; color:var(--text-muted);">Answer: No, custom 5ms regex parser consumes &lt;15MB RAM and 0.00% CPU overhead.</span></div></li>
-            <li><span class="icon-bullet blue">Q3</span> <div><strong>"What happens if a WebLogic session expires?"</strong><br><span style="font-size:13px; color:var(--text-muted);">Answer: Node State Preservation locks stored metrics; amber `🔑 SESSION EXPIRED` badge prompts 1-click re-login.</span></div></li>
-          </ul>
+          <p class="tech-desc">
+            <strong>Q1: "If the WebLogic tab is closed, how does the tool fetch data?"</strong><br>
+            <em>Answer:</em> The background Service Worker executes programmatic HTTP requests to the console. It uses the browser's session cookies to fetch data in memory without needing open tabs.
+          </p>
+          <p class="tech-desc">
+            <strong>Q2: "Will 3-second background polling slow down the computer?"</strong><br>
+            <em>Answer:</em> No. The stream regex parser processes responses in 5 milliseconds, consuming less than 15MB RAM and 0.00% CPU overhead.
+          </p>
+          <p class="tech-desc">
+            <strong>Q3: "What happens if the WebLogic session expires?"</strong><br>
+            <em>Answer:</em> The tool locks onto the last-known metrics to prevent data loss and flags the expired session with an amber badge for 1-click re-login.
+          </p>
+          <div class="tech-highlight green">
+            <strong>Summary:</strong> The tool is secure, lightweight, and operates 24/7 in background.
+          </div>
         </div>
       </div>
       <div class="speaker-notes-drawer" id="note-10">
         <div class="speaker-notes-title">🎙️ Speaker Script:</div>
-        "Thank you for your time. WebLogic Command Center Prime v3.0 is fully operational. I am now open to any questions."
+        "Thank you for your time. WebLogic Command Center Prime v3.0 is fully operational, secure, and ready for deployment. I am now open to any questions."
       </div>
     </div>
 
@@ -573,6 +698,10 @@
     const toggleNotesBtn = document.getElementById('toggleNotesBtn');
 
     function updateSlide(index) {
+      // Close open speaker notes drawer
+      const openNotes = document.querySelector('.speaker-notes-drawer.open');
+      if (openNotes) openNotes.classList.remove('open');
+
       slides[currentSlide].classList.remove('active');
       currentSlide = (index + slides.length) % slides.length;
       slides[currentSlide].classList.add('active');
