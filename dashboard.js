@@ -515,7 +515,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (domainObj.unreachable) {
           hbBadgeHtml = `<span class="hb-badge unreachable" style="padding:3px 8px;font-size:10px;font-weight:700;border-radius:12px;background:rgba(239,68,68,0.3);color:#fca5a5;border:1px solid #ef4444;" title="Network Disconnected / Server Unreachable">📡 NETWORK DISCONNECTED / UNREACHABLE</span>`;
         } else if (domainObj.isLoggedOut) {
-          hbBadgeHtml = `<span class="hb-badge expired" style="padding:3px 8px;font-size:10px;font-weight:700;border-radius:12px;background:rgba(239,68,68,0.2);color:#fca5a5;border:1px solid rgba(239,68,68,0.4);" title="WebLogic Console Session Logged Out">🔑 EXPIRED</span>`;
+          hbBadgeHtml = `<span class="hb-badge expired" style="padding:3px 8px;font-size:10px;font-weight:700;border-radius:12px;background:rgba(245,158,11,0.3);color:#fef08a;border:1px solid #f59e0b;" title="WebLogic Console Session Logged Out. Click Switch Tab to Log In.">🔑 SESSION EXPIRED</span>`;
         } else if (elapsedSec < 45) {
           hbBadgeHtml = `<span class="hb-badge live" style="padding:3px 8px;font-size:10px;font-weight:700;border-radius:12px;background:rgba(34,197,94,0.2);color:#4ade80;border:1px solid rgba(34,197,94,0.4);" title="${consoleTimeStr}">🟢 LIVE (${elapsedSec}s ago)</span>`;
         } else if (elapsedSec < 180) {

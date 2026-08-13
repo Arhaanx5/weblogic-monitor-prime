@@ -249,6 +249,8 @@ async function pollDomainDirectly(domainObj) {
       }
     }
 
+    const isLoggedOut = (response.url || "").toLowerCase().includes("login") || (response.url || "").toLowerCase().includes("loginform");
+
     if (finalNodes && Object.keys(finalNodes).length > 0) {
       // Compute 2-Tier Differential Cache Hash
       const currentHash = computeStateHash(finalNodes);
@@ -286,8 +288,9 @@ async function pollDomainDirectly(domainObj) {
         ...domainStateMap[cleanKey],
         domainKey: cleanKey,
         unreachable: false,
+        isLoggedOut: isLoggedOut,
         nodes: finalNodes,
-        consoleLastRefreshed: `Live (3s): ${new Date().toLocaleTimeString()}`,
+        consoleLastRefreshed: isLoggedOut ? "Session Expired (Login Required)" : `Live (3s): ${new Date().toLocaleTimeString()}`,
         lastScanTime: Date.now(),
         lastUpdated: Date.now()
       };
