@@ -361,12 +361,12 @@ function hasActiveIncident(nodesObj) {
   return false;
 }
 
-// Ultra-Fast Stream Regex Parser (5ms execution time) - Handles all WebLogic 10g/12c/14c table formats
+// Ultra-Fast Universal Stream Regex Parser (5ms execution time) - Parses any WebLogic 10g/12c/14c HTML table format
 function parseWebLogicServerHTML(htmlText) {
   if (!htmlText) return {};
   const nodes = {};
 
-  const rowRegex = /<tr class="(?:rowEven|rowOdd)">([\s\S]*?)<\/tr>/gi;
+  const rowRegex = /<tr[^>]*>([\s\S]*?)<\/tr>/gi;
   let rowMatch;
 
   while ((rowMatch = rowRegex.exec(htmlText)) !== null) {
@@ -375,30 +375,36 @@ function parseWebLogicServerHTML(htmlText) {
     const cells = [];
     let cellMatch;
     while ((cellMatch = cellRegex.exec(rowHtml)) !== null) {
-      cells.push(cellMatch[1].replace(/<[^>]+>/g, "").trim());
+      const cleanText = cellMatch[1].replace(/<[^>]+>/g, "").replace(/&nbsp;/gi, " ").trim();
+      if (cleanText) cells.push(cleanText);
     }
 
     if (cells.length < 2) continue;
 
-    const serverName = cells[0];
-    if (!serverName || /^name$/i.test(serverName) || /^server$/i.test(serverName)) continue;
+    const firstCell = cells[0];
+    if (!firstCell || /^(name|server|status|health|state|servers)$/i.test(firstCell)) continue;
 
     let health = "OK";
     let state = "RUNNING";
     let sockets = 0;
     let stuckThreads = "";
+    let isServerRow = false;
 
-    // Find health/state/sockets by value inspection
+    // Find health/state/sockets by value inspection across all cells
     for (let i = 1; i < cells.length; i++) {
       const c = cells[i];
       if (/^(OK|CRITICAL|FAILED|WARN|WARNING|HEALTH_OK)$/i.test(c)) {
         health = c;
+        isServerRow = true;
       } else if (/^(RUNNING|SHUTDOWN|ADMIN|STANDBY|STARTING)$/i.test(c)) {
         state = c;
+        isServerRow = true;
       } else if (/^\d+$/.test(c)) {
         if (sockets === 0) sockets = parseInt(c, 10);
       }
     }
+
+    if (!isServerRow) continue;
 
     const isCritical = state !== "RUNNING" || health.toUpperCase().includes("CRITICAL") || health.toUpperCase().includes("FAILED");
     const isWarning = health.toUpperCase().includes("WARN") || (stuckThreads && stuckThreads.trim() !== "");
@@ -407,8 +413,8 @@ function parseWebLogicServerHTML(htmlText) {
     if (isCritical) severity = "CRITICAL";
     else if (isWarning) severity = "WARNING";
 
-    nodes[serverName] = {
-      name: serverName,
+    nodes[firstCell] = {
+      name: firstCell,
       health: health,
       state: state,
       sockets: sockets,
