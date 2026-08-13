@@ -15,9 +15,11 @@ let broadcastTimer = null; // ✅ FIX 4: Debounce timer for broadcastSync
 function cleanDomainKey(key) {
   if (!key) return "UNKNOWN_DOMAIN";
   let cleaned = String(key)
+    .replace(/https?:\/\//gi, "")
+    .replace(/(\d{1,3}\.){3}\d{1,3}:?\d*/g, "")
+    .replace(/\/console.*$/gi, "")
     .replace(/Summary\s+of\s+Servers_?/gi, "")
     .replace(/WLS\s+Console_?/gi, "")
-    .replace(/(\d{1,3}\.){3}\d{1,3}_?/g, "")
     .trim();
 
   cleaned = cleaned.replace(/-/g, "_").replace(/\s+/g, "_").replace(/_+/g, "_").replace(/^_+|_+$/g, "");
@@ -31,6 +33,10 @@ function cleanDomainKey(key) {
   if (/LMS/i.test(cleaned)) return "TCL_LMS";
   if (/CAS/i.test(cleaned)) return "TCL_CAS";
   if (/COMMON/i.test(cleaned)) return "TCL_CommonMasters";
+
+  if (cleaned.toLowerCase().includes("http") || cleaned.toLowerCase().includes("login") || cleaned === "TCL" || cleaned === "HFL") {
+    return "";
+  }
 
   if (!cleaned.startsWith("TCL_") && !cleaned.startsWith("HFL_")) {
     cleaned = "TCL_" + cleaned;
@@ -87,7 +93,18 @@ function sanitizeMap() {
       continue; // 🛑 Suppress UAT domains from NOC Dashboard & Popup
     }
 
+    // 🛑 Purge dirty login URLs and unparsed http keys
+    if (rawKey.toLowerCase().includes("login") || rawKey.toLowerCase().includes("http://") || rawKey.toLowerCase().includes("https://")) {
+      if (!item.nodes || Object.keys(item.nodes).length === 0) {
+        continue;
+      }
+    }
+
     const cleanKey = cleanDomainKey(rawKey);
+    if (!cleanKey || cleanKey.toLowerCase().includes("http") || cleanKey.toLowerCase().includes("login")) {
+      continue;
+    }
+
     item.domainKey = cleanKey;
 
     if (!cleanMap[cleanKey]) {
