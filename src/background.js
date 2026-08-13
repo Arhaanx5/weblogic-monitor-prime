@@ -918,6 +918,11 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   const tabId = sender.tab ? sender.tab.id : null;
 
   switch (msg.type) {
+    case "POLL_NOW": {
+      runHighFrequencyBackgroundPoll();
+      sendResponse({ status: "POLL_EXECUTED" });
+      break;
+    }
     case "BATCH_STATE_UPDATE": {
       const { domainKey, domainHost, url, consoleLastRefreshed, consoleLastRefreshedMs, lastScanTime, isLoggedOut, nodes } = msg.data;
       if (domainKey) {

@@ -394,6 +394,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   } catch (e) {}
 
+  // ⚡ Live Heartbeat Drive: Keeps Manifest V3 Service Worker actively polling every 3 seconds!
+  setInterval(() => {
+    try {
+      if (typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.sendMessage) {
+        chrome.runtime.sendMessage({ type: "POLL_NOW" }, () => {
+          if (chrome.runtime.lastError) {}
+        });
+      }
+    } catch (e) {}
+  }, 3000);
+
   let fetchTimer = null;
   function fetchData() {
     if (fetchTimer) return;
