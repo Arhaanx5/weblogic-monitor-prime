@@ -433,11 +433,11 @@ function verifyTabHealth(tabId) {
   try {
     chrome.tabs.get(tabId, (tab) => {
       if (chrome.runtime.lastError || !tab) {
-        // Tab is dead — remove from domainStateMap
+        // Tab closed — detach tabId BUT keep domain active for Zero-Tab background polling!
         for (const key in domainStateMap) {
           if (domainStateMap[key].tabId === tabId) {
-            delete domainStateMap[key];
-            console.log(`[WLMonitor] Dead tab removed from registry: ${key} (tabId: ${tabId})`);
+            domainStateMap[key].tabId = null;
+            console.log(`[WLMonitor] Tab closed for domain: ${key}, keeping domain active for Zero-Tab background polling.`);
           }
         }
         persistDomainState();
